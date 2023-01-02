@@ -151,10 +151,7 @@
               class="card-title fw-bold fs-5 text-decoration-none text-yellow mb-1"
               >{{$data.Name}}</a
             >
-            <p class="card-subtitle mb-3 text-beige fw-light">
-              Duration : 3 Month
-              <!-- {{$data.Duration}} -->
-            </p>
+            <p class="card-subtitle mb-3 text-beige fw-light">{{$data.Duration}}</p>
 
             <p class="card-text mb-3 text-white">{{$data.Desc}}</p>
 
@@ -171,7 +168,7 @@
             <!-- button start -->
             <div class="d-flex justify-content-between mb-3 mt-3">
               <a
-                href="#"
+                href="/edit-project/{{$index}}"
                 class="card-link text-decoration-none btn btn-card text-oxblue fw-semibold px-5 py-2"
                 >edit</a
               >

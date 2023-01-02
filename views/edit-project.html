@@ -60,7 +60,7 @@
     <!-- form start -->
     <div class="container">
       <div class="mx-auto mar-top px-5 text-yellow form-container">
-        <form action="/editProject/{{.detail-project.Id}}" method="POST">
+        <form action="/edit-project-form/{{.proDetail.Id}}" method="POST">
           <h1 class="fw-bold text-center mb-4">ADD MY PROJECT</h1>
 
           <!-- title -->
@@ -71,7 +71,7 @@
             <input
               type="text"
               id="project-name"
-              class="form-control box-shadow" name="name" value="{{.detail-project .name}}" />
+              class="form-control box-shadow" name="name" value="{{.proDetail.Name}}" />
           </div>
           <!-- end -->
 
@@ -85,7 +85,7 @@
                 type="date"
                 name="start-date"
                 id="start-date"
-                class="form-control box-shadow" />
+                class="form-control box-shadow" value="{{.proDetail.StartDate}}" />
             </div>
             <div class="col">
               <label for="end-date" class="form-label fw-semibold"
@@ -95,7 +95,7 @@
                 type="date"
                 name="end-date"
                 id="end-date"
-                class="form-control box-shadow" />
+                class="form-control box-shadow" value="{{.proDetail.EndDate}}" />
             </div>
           </div>
           <!-- end -->
@@ -108,7 +108,7 @@
             <textarea
               name="desc"
               id="description"
-              class="form-control box-shadow"></textarea>
+              class="form-control box-shadow">{{.proDetail.Desc}}</textarea>
           </div>
           <!-- end -->
 
@@ -161,6 +161,9 @@
           <!-- image upload -->
           <div class="mb-3">
             <label class="form-label fw-semibold">Upload Image</label>
+            <div class="my-2">
+              <img src="/public/assets/img/img.jpg" alt="image" style="width: 20rem;">
+            </div>
             <div class="input-group mb-3">
               <input
                 type="file"

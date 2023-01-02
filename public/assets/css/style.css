@@ -204,6 +204,10 @@ body {
   width: 100%;
 }
 
+.img-preview {
+  width: 20%;
+}
+
 .text-justify {
   text-align: justify;
 }
