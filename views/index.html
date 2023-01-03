@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{.Data.Title}}</title>
+    <!-- style -->
+    <link rel="stylesheet" href="/public/assets/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"></script>
+    <!-- icon -->
+    <script
+      src="https://kit.fontawesome.com/c7e7d73902.js"
+      crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <!-- navbar start -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-yellow">
+      <div class="container-lg">
+        <a class="navbar-brand me-3" href="/home">
+          <img src="/public/assets/img/logo.png" alt="logo" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" href="/home">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="/add-project" class="nav-link">Add Project</a>
+            </li>
+          </ul>
+          <div>
+            <div class="d-flex contact-me">
+              <a href="/contact-me" class="ms-auto">Contact Me</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- navbar end -->
+
+    <!-- content start -->
+    <div class="container mar-top">
+      <div class="card border-1 my-5 p-5 flex-row justify-content-between">
+        <!-- left side start -->
+        <div class="align-self-center">
+          <h2 class="fw-bold">Welcome to my hut</h2>
+          <p class="desc_profile">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat,
+            dolor similique at temporibus maxime iusto recusandae dolorum
+            repellendus? Odit, a, cum provident ab hic quia, laboriosam ullam
+            veniam ipsum nobis accusantium qui amet eveniet magnam! Dignissimos
+            assumenda incidunt id perferendis distinctio, reprehenderit nobis
+            earum deleniti. Aut unde nobis, assumenda nam praesentium corporis
+            earum incidunt accusantium quisquam odit? Soluta asperiores
+            molestias dolore ipsa veritatis reprehenderit aspernatur iure
+            temporibus, deleniti dicta neque eius nostrum. Maxime illum quis
+            doloremque amet! Ipsum ratione mollitia dolor quaerat nobis facilis,
+            ipsam eveniet. Iure deserunt eius neque excepturi, iste voluptate
+            nemo error, laudantium sequi maxime culpa temporibus!
+          </p>
+
+          <!-- button/download cv start -->
+          <div class="my-5 download">
+            <a
+              href="#"
+              class="py-2 px-4 me-3 text-decoration-none rounded-pill contact-btn"
+              >Contact</a
+            >
+            <a href="#" class="text-decoration-none dl-btn"
+              >Download CV <i class="fa-solid fa-download"></i
+            ></a>
+          </div>
+          <!-- end -->
+
+          <!-- sosmed start -->
+          <div class="sosmed">
+            <a
+              href="https://www.linkedin.com/in/amalia-wijonarko/"
+              target="_blank"
+              ><i
+                class="fa fa-linkedin btn btn-outline-dark p-3 me-2 rounded-circle"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-instagram btn btn-outline-dark p-3 me-2 rounded-circle"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-facebook-f btn btn-outline-dark p-3 me-2 rounded-circle"></i
+            ></a>
+            <a href="#"
+              ><i
+                class="fa-brands fa-twitter btn btn-outline-dark p-3 me-2 rounded-circle"></i
+            ></a>
+          </div>
+          <!-- sosmed end -->
+        </div>
+        <!-- left side end -->
+
+        <!-- right side start -->
+        <div class="align-self-center">
+          <div class="card img-container border-0 bg-dark text-center ms-5">
+            <img
+              src="/public/assets/img/profile.jpg"
+              alt="profile image"
+              class="card-img-top" />
+            <div class="card-body">
+              <h1>Amalia Wijonarko</h1>
+              <p>Fullstack Developer</p>
+            </div>
+          </div>
+        </div>
+        <!-- right end -->
+      </div>
+    </div>
+    <!-- content end -->
+
+    <!-- my project start -->
+    <div class="container-fluid bg-yellow mt-5 pt-2 pb-5">
+      <div class="container" id="list-show">
+        <h3 class="fw-bold text-center text-oxblue my-5">MY PROJECT</h3>
+        <div class="d-flex justify-content-center">
+          {{range $index, $data := .projects}}
+          <div class="card card-project p-3 border-0 m-3">
+            <img
+              src="/public/assets/img/img.jpg"
+              alt="photo"
+              class="card-img-top rounded-3 mb-3" />
+            <a
+              href="/detail-project/{{$index}}"
+              class="card-title fw-bold fs-5 text-decoration-none text-yellow mb-1"
+              >{{$data.Name}}</a
+            >
+            <p class="card-subtitle mb-3 text-beige fw-light">{{$data.Duration}}</p>
+
+            <p class="card-text mb-3 text-white">{{$data.Desc}}</p>
+
+            <!-- icon start -->
+            <div class="d-flex mb-3 text-yellow">
+              {{range $index, $tech := $data.Tech }}
+              <div class="me-3">
+                <i class="{{$tech}} fs-2"></i>
+              </div>
+              {{end}}
+            </div>
+            <!-- icon end -->
+
+            <!-- button start -->
+            <div class="d-flex justify-content-between mb-3 mt-3">
+              <a
+                href="/edit-project/{{$index}}"
+                class="card-link text-decoration-none btn btn-card text-oxblue fw-semibold px-5 py-2"
+                >edit</a
+              >
+              <a
+                href="/delete-project/{{$index}}"
+                class="card-link text-decoration-none btn btn-card text-oxblue fw-semibold px-5 py-2"
+                >delete</a
+              >
+            </div>
+            <!-- button end -->
+          </div>
+          {{end}}
+        </div>
+      </div>
+    </div>
+    <!-- my project end -->
+  </body>
+</html>
