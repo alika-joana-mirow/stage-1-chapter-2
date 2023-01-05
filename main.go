@@ -46,7 +46,9 @@ func main() {
 	route.HandleFunc("/detail-project/{id}", detailProject).Methods("GET")
 	route.HandleFunc("/delete-project/{id}", deleteProject).Methods("GET")
 	route.HandleFunc("/edit-project/{id}", editProject).Methods("GET")
-	route.HandleFunc("/edit-project-form/{id}", editProjectForm).Methods("POST")
+	route.HandleFunc("/edit-project/{id}", editProjectForm).Methods("POST")
+
+	// route.HandleFunc("/register", formRegister).Methods("GET")
 	route.HandleFunc("/contact-me", contactMe).Methods("GET")
 
 	fmt.Println("Server is running on port 5000")
@@ -109,41 +111,34 @@ func addProject(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
-	// fmt.Println("Project Name : " + r.PostForm.Get("name"))
-	// fmt.Println("Start Date : " + r.PostForm.Get("start-date"))
-	// fmt.Println("End Date : " + r.PostForm.Get("end-date"))
-	// fmt.Println("Description : " + r.PostForm.Get("desc"))
-	// fmt.Println("Technologies : ", r.Form["tech"])
-
 	name := r.PostForm.Get("name")
-	// startDate := r.PostForm.Get("start-date")
-	// endDate := r.PostForm.Get("end-date")
+	startDate := r.PostForm.Get("start-date")
+	endDate := r.PostForm.Get("end-date")
 	desc := r.PostForm.Get("desc")
 	tech := r.Form["tech"]
 	// duration := proDuration(startDate, endDate)
 
-	var newProject = project{
-		Name: name,
-		// StartDate: startDate,
-		// EndDate:   endDate,
-		Desc: desc,
-		Tech: tech,
-		// Duration:  duration,
+	_, err = connection.Conn.Exec(context.Background(), "INSERT INTO public.tb_projects(name, start_date, end_date, description, technologies, image) VALUES ($1, $2, $3, $4, $5, 'img.jpg')", name, startDate, endDate, desc, tech)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("message : " + err.Error()))
+		return
 	}
-
-	projects = append(projects, newProject)
-
-	// fmt.Println(projects)
 
 	http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 }
 
 func deleteProject(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	// fmt.Println(id)
-
-	projects = append(projects[:id], projects[id+1:]...)
+	_, err := connection.Conn.Exec(context.Background(), "DELETE FROM public.tb_projects WHERE id=$1", id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("message : " + err.Error()))
+		return
+	}
 
 	http.Redirect(w, r, "/home", http.StatusFound)
 }
@@ -195,25 +190,23 @@ func editProject(w http.ResponseWriter, r *http.Request) {
 
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
-	proDetail := project{}
+	ProjectDetail := project{}
 
-	for index, data := range projects {
-		if index == id {
-			proDetail = project{
-				Id:        id,
-				Name:      data.Name,
-				StartDate: data.StartDate,
-				EndDate:   data.EndDate,
-				Desc:      data.Desc,
-				Tech:      data.Tech,
-				Duration:  data.Duration,
-			}
-		}
+	err = connection.Conn.QueryRow(context.Background(), "SELECT id, name, start_date, end_date, description, technologies, image FROM public.tb_projects WHERE id=$1", id).Scan(
+		&ProjectDetail.Id, &ProjectDetail.Name, &ProjectDetail.StartDate, &ProjectDetail.EndDate, &ProjectDetail.Desc, &ProjectDetail.Tech, &ProjectDetail.Img,
+	)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("message : " + err.Error()))
+		return
 	}
+
+	ProjectDetail.Format_StartDate = ProjectDetail.StartDate.Format("2006-01-02")
+	ProjectDetail.Format_EndDate = ProjectDetail.EndDate.Format("2006-01-02")
 
 	respData := map[string]interface{}{
 		"Data":      Data,
-		"proDetail": proDetail,
+		"projects": ProjectDetail,
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -226,28 +219,37 @@ func editProjectForm(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+
 	name := r.PostForm.Get("name")
-	// startDate := r.PostForm.Get("start-date")
-	// endDate := r.PostForm.Get("end-date")
+	startDate := r.PostForm.Get("start-date")
+	endDate := r.PostForm.Get("end-date")
 	desc := r.PostForm.Get("desc")
 	tech := r.Form["tech"]
 	// duration := proDuration(startDate, endDate)
 
-	var newProject = project{
-		Name: name,
-		// StartDate: startDate,
-		// EndDate:   endDate,
-		Desc: desc,
-		Tech: tech,
-		// Duration:  duration,
+	sDate, _ := time.Parse("2006-01-02", startDate)
+	eDate, _ := time.Parse("2006-01-02", endDate)
+
+	_, err = connection.Conn.Exec(context.Background(), "UPDATE public.tb_projects SET name=$1, start_date=$2, end_date=$3, description=$4, technologies=$5 WHERE id=$6", name, sDate, eDate, desc, tech, id)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("message : " + err.Error()))
 	}
-
-	id, _ := strconv.Atoi(mux.Vars(r)["id"])
-
-	projects[id] = newProject
 
 	http.Redirect(w, r, "/home", http.StatusMovedPermanently)
 }
+
+// func formRegister(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+// 	var tmpl, err = template.ParseFiles("views/register.html")
+// 	if err != nil {
+// 		w.WriteHeader(http.StatusInternalServerError)
+// 		w.Write([]byte("message : " + err.Error()))
+// 		return
+// 	}
+// }
 
 func contactMe(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
