@@ -1,0 +1,213 @@
+/* font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font: 16px/20px "Poppins", sans-serif;
+  font-weight: 500;
+}
+
+body {
+  background-color: #2a3032 !important;
+}
+
+.bg-yellow {
+  background-color: #fee16b !important;
+}
+
+.bg-oxblue {
+  background-color: #2a3032 !important;
+}
+
+.text-oxblue {
+  color: #2a3032 !important;
+}
+
+.text-yellow {
+  color: #fee16b !important;
+}
+
+.text-beige {
+  color: #f5f5dc !important;
+}
+
+.mar-top {
+  margin-top: 7rem;
+}
+
+/* navigation bar */
+
+.navbar-brand img {
+  width: 3vw;
+}
+
+.navbar-light {
+  list-style: none;
+  text-decoration: none;
+  color: #2a3032 !important;
+}
+
+.active {
+  font-weight: 800 !important;
+  color: #2a3032 !important;
+}
+
+.nav-link {
+  font-size: 16px;
+}
+
+.contact-me {
+  border-radius: 1vw;
+  background-color: #2a3032;
+  padding: 1.25vh 2vw;
+  text-align: center;
+  margin-left: 45rem;
+}
+
+.contact-me a {
+  text-decoration: none;
+  color: #fee16b;
+}
+
+/* home */
+.card {
+  background-color: #fee16b !important;
+  box-shadow: 0 0 1vw #fee16b;
+  border-radius: 1rem !important;
+}
+
+.card h2 {
+  letter-spacing: 2px;
+}
+
+.desc_profile {
+  text-align: justify;
+}
+
+.contact-btn {
+  background-color: #2a3032;
+  color: #fee16b;
+  text-align: center;
+}
+
+.contact-btn:hover {
+  color: #fff;
+}
+
+.dl-btn {
+  color: #2a3032;
+}
+
+.sosmed i {
+  color: #fee16b;
+}
+
+.btn {
+  background-color: #2a3032 !important;
+}
+
+.card .img-container {
+  width: 25rem;
+  box-shadow: 0 0 1rem rgb(42, 48, 50, 0.6);
+}
+
+.card-body {
+  letter-spacing: 1px;
+}
+
+.card-body h1 {
+  font-weight: 700;
+  color: #fee16b !important;
+  font-size: 32px;
+}
+
+.card-body p {
+  font-size: 18px;
+  color: #fff;
+}
+
+.card-img-top {
+  border-top-left-radius: 1rem !important;
+  border-top-right-radius: 1rem !important;
+}
+
+/* my project list */
+.container h3 {
+  font-size: 36px;
+  letter-spacing: 1px;
+}
+
+.card-project {
+  width: 23rem;
+  background-color: #2a3032 !important;
+  box-shadow: 0 0 1rem rgb(42, 48, 50, 0.6);
+}
+
+/* .card-project img {
+  width: 100%;
+  height: 100%;
+}
+
+.card-project a {
+  width: 100%;
+  height: 3rem;
+}
+
+.card-project .card-text {
+  width: 100%;
+  height: 5rem;
+} */
+
+.btn-card {
+  width: 50%;
+  background-color: #fee16b !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* form */
+.form-container {
+  width: 45%;
+}
+
+.container textarea {
+  resize: none;
+  height: 8rem;
+}
+
+.btn-submit {
+  width: 25%;
+  background-color: #fee16b !important;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 1px;
+}
+
+/* add project */
+.check-border {
+  border: 1 solid #fee16b;
+}
+
+.box-shadow {
+  box-shadow: 0 0.1rem 0.3rem rgb(254, 225, 107, 0.6);
+}
+
+/* detail project */
+.img-fluid {
+  width: 55%;
+  margin-right: 2rem;
+}
+
+.img-size {
+  width: 100%;
+}
+
+.img-preview {
+  width: 20%;
+}
+
+.text-justify {
+  text-align: justify;
+}
