@@ -19,6 +19,7 @@ import (
 type MetaData struct {
 	Title     string
 	IsLogin   bool
+	UserId    int
 	UserName  string
 	FlashData string
 }
@@ -39,6 +40,7 @@ type project struct {
 	Desc             string
 	Img              string
 	IsLogin          bool
+	UserId           int
 }
 
 type User struct {
@@ -115,28 +117,60 @@ func home(w http.ResponseWriter, r *http.Request) {
 
 	Data.FlashData = strings.Join(flashes, "")
 
-	rows, _ := connection.Conn.Query(context.Background(), "SELECT id, name, start_date, end_date, description, technologies, image FROM public.tb_projects")
-
 	var result []project
-	// next => read value from database
-	for rows.Next() {
-		var each = project{}
 
-		var err = rows.Scan(&each.Id, &each.Name, &each.StartDate, &each.EndDate, &each.Desc, &each.Tech, &each.Img)
-		if err != nil {
-			fmt.Println(err.Error())
-			return
+	if !Data.IsLogin {
+
+		rows, _ := connection.Conn.Query(context.Background(), "SELECT id, name, start_date, end_date, description, technologies, image FROM public.tb_projects")
+
+		// next => read value from database
+		for rows.Next() {
+			var each = project{}
+
+			var err = rows.Scan(&each.Id, &each.Name, &each.StartDate, &each.EndDate, &each.Desc, &each.Tech, &each.Img, &each.UserId)
+			if err != nil {
+				fmt.Println(err.Error())
+				return
+			}
+
+			each.Duration = proDuration(each.StartDate, each.EndDate)
+
+			if session.Values["IsLogin"] != true {
+				each.IsLogin = false
+			} else {
+				each.IsLogin = session.Values["IsLogin"].(bool)
+			}
+
+			result = append(result, each)
 		}
+	} else {
+		rows, _ := connection.Conn.Query(context.Background(), "SELECT id, name, start_date, end_date, description, technologies, image, user_id FROM public.tb_projects WHERE user_id=$1", Data.UserId)
 
-		each.Duration = proDuration(each.StartDate, each.EndDate)
+		// next => read value from database
+		for rows.Next() {
+			var each = project{}
 
-		if session.Values["IsLogin"] != true {
-			each.IsLogin = false
-		} else {
-			each.IsLogin = session.Values["IsLogin"].(bool)
+			var err = rows.Scan(&each.Id, &each.Name, &each.StartDate, &each.EndDate, &each.Desc, &each.Tech, &each.Img, &each.UserId)
+			if err != nil {
+				fmt.Println(err.Error())
+				return
+			}
+
+			each.Duration = proDuration(each.StartDate, each.EndDate)
+
+			if session.Values["IsLogin"] != true {
+				each.IsLogin = false
+			} else {
+				each.IsLogin = session.Values["IsLogin"].(bool)
+			}
+
+			result = append(result, each)
 		}
+	}
 
-		result = append(result, each)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
 	}
 
 	respData := map[string]interface{}{
@@ -173,9 +207,13 @@ func addProject(w http.ResponseWriter, r *http.Request) {
 	endDate := r.PostForm.Get("end-date")
 	desc := r.PostForm.Get("desc")
 	tech := r.Form["tech"]
-	// duration := proDuration(startDate, endDate)
 
-	_, err = connection.Conn.Exec(context.Background(), "INSERT INTO public.tb_projects(name, start_date, end_date, description, technologies, image) VALUES ($1, $2, $3, $4, $5, 'img.jpg')", name, startDate, endDate, desc, tech)
+	var store = sessions.NewCookieStore([]byte("SESSION_ID"))
+	session, _ := store.Get(r, "SESSION_ID")
+
+	user := session.Values["Id"].(int)
+
+	_, err = connection.Conn.Exec(context.Background(), "INSERT INTO public.tb_projects(name, start_date, end_date, description, technologies, image, user_id) VALUES ($1, $2, $3, $4, $5, 'img.jpg', $6)", name, startDate, endDate, desc, tech, user)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("message : " + err.Error()))
