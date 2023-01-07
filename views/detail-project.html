@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{.Data.Title}}</title>
+    <!-- style -->
+    <link rel="stylesheet" href="/public/assets/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+    <!-- icon -->
+    <script
+      src="https://kit.fontawesome.com/c7e7d73902.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <!-- navbar start -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-yellow">
+      <div class="container-lg">
+        <a class="navbar-brand" href="home/">
+          <img src="/public/assets/img/logo.png" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active text-oxblue"
+                aria-current="page"
+                href="/home"
+                >Home</a
+              >
+            </li>
+            {{if .IsLogin}}
+            <li class="nav-item">
+              <a
+                class="nav-link text-oxblue"
+                aria-current="page"
+                href="/add-project"
+                >Add Project</a
+              >
+            </li>
+            {{end}}
+          </ul>
+
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            {{if .IsLogin}}
+            <li class="nav-item">
+              <a class="nav-link text-oxblue" aria-current="page" href="#"
+                >{{.UserName}}</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link list-active text-oxblue"
+                aria-current="page"
+                href="/logout"
+                >Logout</a
+              >
+            </li>
+            {{else}}
+            <li class="nav-item">
+              <a
+                class="nav-link text-oxblue"
+                aria-current="page"
+                href="/register"
+                >Register</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-oxblue" aria-current="page" href="/login"
+                >Login</a
+              >
+            </li>
+            {{end}}
+          </ul>
+
+          <div>
+            <a href="/contact-me" class="btn contact-me text-yellow px-4 ms-5"
+              >Contact Me</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+    {{if .FlashData}}
+    <div class="alert alert-success" role="alert">{{.FlashData}}</div>
+    {{end}}
+    <!-- navbar end -->
+
+    <!-- content start -->
+    <div class="container mar-top">
+      <div class="mx-auto">
+        <h1 class="fw-bold text-yellow text-center mb-5">{{.project.Name}}</h1>
+        <div class="d-flex">
+          <div class="img-fluid mb-3">
+            <img
+              src="/public/assets/img/img.jpg"
+              alt="project image"
+              class="img-size"
+            />
+          </div>
+          <div class="d-flex flex-column text-yellow">
+            <div class="col flex-grow-0 mt-3 mb-5">
+              <p class="fw-bold fs-3">Duration</p>
+              <div>
+                <p class="text-beige fs-4">
+                  <i class="fa-solid fa-calendar-days fs-4"></i>
+                  {{.project.Format_StartDate}} - {{.project.Format_EndDate}}
+                </p>
+                <p class="text-beige fs-4">
+                  <i class="fa-regular fa-clock fs-4"></i> {{.project.Duration}}
+                </p>
+              </div>
+            </div>
+            <div class="col flex-grow-0 mt-3">
+              <p class="fw-bold fs-3">Technologies</p>
+              <div class="d-flex flex-row justify-content-between text-beige">
+                <div class="d-flex mb-3">
+                  {{range $index, $tech := .project.Tech }}
+                  <div class="col-6 me-3 fs-4">
+                    <i class="{{$tech}}  fs-4"></i>
+                    {{if eq $tech "fa-brands fa-node"}}
+                     Node Js 
+                     {{else if eq $tech "fa-brands fa-react"}}
+                      React Js 
+                      {{else if eq $tech "fa-brands fa-vuejs"}}
+                       Vue Js 
+                       {{else if eq $tech "fa-brands fa-angular"}}
+                        Angular 
+                        {{end}}
+                  </div>
+                  {{end}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="text-beige text-justify mb-5">{{.project.Desc}}</p>
+      </div>
+    </div>
+  </body>
+</html>
